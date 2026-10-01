@@ -1,0 +1,93 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\Users\Aluno_Manha> $env:GIT_CONFIG_NOSYSTEM = "1"
+PS C:\Users\Aluno_Manha> $s = Read-Host "Cole o token" -AsSecureString
+Cole o token: *********************************************************************************************
+PS C:\Users\Aluno_Manha> $env:GIT_TOKEN = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($s))
+PS C:\Users\Aluno_Manha> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' clone https://github.com/TesteDeTokenTemporario/REPO.git
+Cloning into 'REPO'...
+remote: Repository not found.
+fatal: repository 'https://github.com/TesteDeTokenTemporario/REPO.git/' not found
+PS C:\Users\Aluno_Manha> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' clone https://github.com/TesteDeTokenTemporario/REPO.git
+Cloning into 'REPO'...
+warning: You appear to have cloned an empty repository.
+PS C:\Users\Aluno_Manha> cd REPO
+PS C:\Users\Aluno_Manha\REPO> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' push
+error: src refspec refs/heads/main does not match any
+error: failed to push some refs to 'https://github.com/TesteDeTokenTemporario/REPO.git'
+PS C:\Users\Aluno_Manha\REPO> git status
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+PS C:\Users\Aluno_Manha\REPO> "# REPO" | Out-File -Encoding utf8 README.md
+PS C:\Users\Aluno_Manha\REPO> git add .
+PS C:\Users\Aluno_Manha\REPO> git commit -m "primeiro commit teste"
+[main (root-commit) af1584d] primeiro commit teste
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+PS C:\Users\Aluno_Manha\REPO> dir
+
+
+    Diretório: C:\Users\Aluno_Manha\REPO
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        01/10/2026     10:38             11 README.md
+
+
+PS C:\Users\Aluno_Manha\REPO> git log --oneline
+af1584d (HEAD -> main) primeiro commit teste
+PS C:\Users\Aluno_Manha\REPO> git status
+On branch main
+Your branch is based on 'origin/main', but the upstream is gone.
+  (use "git branch --unset-upstream" to fixup)
+
+nothing to commit, working tree clean
+PS C:\Users\Aluno_Manha\REPO> git remote -v
+origin  https://github.com/TesteDeTokenTemporario/REPO.git (fetch)
+origin  https://github.com/TesteDeTokenTemporario/REPO.git (push)
+PS C:\Users\Aluno_Manha\REPO> git branch --unset-upstream
+PS C:\Users\Aluno_Manha\REPO> echo $env:GIT_TOKEN
+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
+PS C:\Users\Aluno_Manha\REPO> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' push -u origin main
+remote: Permission to TesteDeTokenTemporario/REPO.git denied to TesteDeTokenTemporario.
+fatal: unable to access 'https://github.com/TesteDeTokenTemporario/REPO.git/': The requested URL returned error: 403
+PS C:\Users\Aluno_Manha\REPO> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' push -u origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 228 bytes | 228.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/TesteDeTokenTemporario/REPO.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+PS C:\Users\Aluno_Manha\REPO> git config --local user.name "TesteDeTokenTemporario"
+PS C:\Users\Aluno_Manha\REPO> git config --local user.email "batman1234arthur@gmail.com"
+PS C:\Users\Aluno_Manha\REPO> "# Segundo README`n`nConteúdo de teste." | Out-File -Encoding utf8 README2.md
+PS C:\Users\Aluno_Manha\REPO> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        README2.md
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Aluno_Manha\REPO> git add README2.md
+PS C:\Users\Aluno_Manha\REPO> git commit -m "segundo commit teste"
+[main 8e9788d] segundo commit teste
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README2.md
+PS C:\Users\Aluno_Manha\REPO> git -c credential.helper= -c 'credential.helper=!f() { echo username=TesteDeTokenTemporario; echo password=$GIT_TOKEN; }; f' push
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 331 bytes | 331.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/TesteDeTokenTemporario/REPO.git
+   af1584d..8e9788d  main -> main
+PS C:\Users\Aluno_Manha\REPO>
